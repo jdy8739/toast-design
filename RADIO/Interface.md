@@ -38,17 +38,55 @@ const openToast = ({ id, duration = 3000, ...props }) => {
 
 ### 정적 사용
 
-유저는 토스트를 사용하는 소비처의 도메인 로직에서 명시적으로 `<Toast message={"session expired!"} />` 처럼 정적으로 토스트를 달 수도 있고,
+도메인 로직에서 직접 `openToast()`를 호출하여 정적으로 토스트를 띄운다.
+
+```js
+import { openToast } from "@toast";
+
+function ProfileSaved() {
+    const handleSave = async () => {
+        await saveProfile();
+        openToast({ message: "프로필 저장 완료", meaning: "success", position: "bottom-right" });
+    };
+}
+
+function SessionExpired() {
+    const handleAction = () => {
+        openToast({ message: "세션이 만료되었습니다", meaning: "error", exposeCloseButton: true, position: "top-right" });
+    };
+}
+```
 
 ### 동적 사용
 
-axios의 interceptor나, tanstack-query의 cache의 생명주기 훅에 Toast를 호출하는 함수를 주입해서 동적으로 토스트를 띄울 수 있다.
+#### Axios 인터셉터
 
 ```js
-import toast from "@toast";
+import { openToast } from "@toast";
 
 axios.interceptors.response.use(
     (response) => response,
-    (error) => openToast({ message: error.message, duration: 2000, exposeCloseButton: true, position: "top" })
+    (error) => openToast({ message: error.message, duration: 2000, exposeCloseButton: true, position: "top-right" })
 );
+```
+
+#### TanStack Query 캐시 훅
+
+```js
+import { openToast } from "@toast";
+
+const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error) =>
+            openToast({ message: error.message, meaning: "error", position: "top-right" }),
+        onSuccess: () =>
+            openToast({ message: "데이터 갱신 완료", meaning: "success", position: "bottom-right" }),
+    }),
+    mutationCache: new MutationCache({
+        onError: (error) =>
+            openToast({ message: error.message, meaning: "error", position: "top-right" }),
+        onSuccess: () =>
+            openToast({ message: "변경사항 저장 완료", meaning: "success", position: "bottom-right" }),
+    }),
+});
 ```
