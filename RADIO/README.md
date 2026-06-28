@@ -1,6 +1,6 @@
-# 📐 System Design Study
+# 🍞 Toast Design
 
-시스템 설계 스터디
+토스트 UI 컴포넌트의 설계 연습
 
 ## RADIO
 
@@ -12,9 +12,13 @@
 - **I**nterface — 공개 API, 사용 패턴
 - **O**ptimization — 렌더링 최적화 전략
 
-## 🚀 rocket_FSM
+## 구조
 
-FSM(Finite State Machine) 기반 컴포넌트 상태 설계 연습
-
-- [Cost Calculation FSM](./rocket_FSM/Cost%20Calculation%20FSM/)
-- [Cost Review FSM](./rocket_FSM/Cost%20Review%20FSM/)
+```
+RADIO/
+├── Requirements.md   # 무엇을 만들지
+├── Architecture.md   # 어떻게 구성할지
+├── DataModel.md      # 어떤 데이터를 다룰지
+├── Interface.md      # 어떻게 사용할지
+└── Optimization.md   # 어떻게 최적화할지
+```
